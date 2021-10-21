@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { Form, Container, Row, Col, Button } from "react-bootstrap";
 import Displayjobs from "./DisplayJobs";
+import {connect} from "react-redux";
+import { goingtoactions } from "../actions";
+
+const read = state => state
+
+const write = (dispatch) => ({
+
+    getjobs : () => {
+        dispatch(goingtoactions())
+    }
+})
 
 const Home = ({setjobdetail}) => {
 
@@ -9,7 +20,7 @@ const Home = ({setjobdetail}) => {
     const [queryvar, setqueryvar] = useState('search')
     const [mediator, setmediator] = useState('')
 
-    //const url = `https://strive-jobs-api.herokuapp.com/jobs?${queryvar}=${query}`
+  
 
     const fetchfunc = async () => {
         try {
@@ -89,4 +100,4 @@ const Home = ({setjobdetail}) => {
     )
 }
 
-export default Home;
+export default connect(read, write)(Home);

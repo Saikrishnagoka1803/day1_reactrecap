@@ -12,6 +12,16 @@ const MainReducer = (state = initialState, action) => {
                }
             }
         }
+
+        case 'REMOVE_FROM_FAV': {
+            return {
+                ...state,
+                favourites: {
+                    ...state.favourites,
+                    Fav: state.favourites.Fav.filter(e => e._id !== action.payload._id)
+                }
+            }
+        }
         
         default: return state
     }

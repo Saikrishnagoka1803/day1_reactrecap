@@ -1,19 +1,23 @@
 import { Card, Container, Row, Col, Button } from "react-bootstrap";
 import {connect} from "react-redux"
+import {removejobfromfavourites} from "../actions"
 
 const read = state => ({
     favarray: state.favourites.Fav
 })
 
-const write = () => {
+const write = (dispatch) => ({
+    removefromFavourites: (job) => {
+        dispatch(removejobfromfavourites(job))
+    }
+})
 
-}
-
-const Favourites = ({favarray}) => {
+const Favourites = ({favarray, removefromFavourites }) => {
 
     return (
         <Container>
-            {favarray.map(job => <Row className='mt-5 ml-5'>
+            {
+            favarray.map(job => <Row className='mt-5 ml-5'>
                 <Card style={{ width: '18rem' }} shadow>
                     <Card.Body>
                         <Card.Title>{job.company_name}</Card.Title>
@@ -24,9 +28,12 @@ const Favourites = ({favarray}) => {
                         <Card.Link href="#">Card Link</Card.Link>
                         <Card.Link href="#">Another Link</Card.Link>
                     </Card.Body>
-                    <Button variant='danger'>Remove</Button>
+
+                    <Button variant='danger' onClick={() => removefromFavourites(job)}>Remove</Button>
+
                 </Card>
-            </Row>  )}
+            </Row>  )
+            }
         </Container>
     )
 }

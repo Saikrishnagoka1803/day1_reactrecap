@@ -5,7 +5,12 @@ import MainReducer from "../reducers"
 export const initialState = {
     favourites: {
         Fav: []
-    }
+    },
+    jobs: {
+        job: []
+    },
+    queryvar: '',
+    query: ''
 }
 
 const configureStore = createStore(
