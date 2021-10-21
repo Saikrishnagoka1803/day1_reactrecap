@@ -1,6 +1,9 @@
 import { useState } from "react";
 import {  Row,  ListGroup, Button, Container } from "react-bootstrap"
 import { Link } from "react-router-dom";
+import {connect} from "react-redux"
+
+
 
 const Displayjobs = ({jobs, setjobdetail}) => {
 

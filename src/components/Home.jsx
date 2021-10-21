@@ -2,58 +2,39 @@ import { useEffect, useState } from "react";
 import { Form, Container, Row, Col, Button } from "react-bootstrap";
 import Displayjobs from "./DisplayJobs";
 import {connect} from "react-redux";
-import { goingtoactions } from "../actions";
+import { goingtogetjobsfromaction } from "../actions";
 
-const read = state => state
+const read = state => ({
+    jobs: state.jobs.job
+})
 
 const write = (dispatch) => ({
 
-    getjobs : () => {
-        dispatch(goingtoactions())
-    }
+    getjobs : (queryvar, queryvartwo) => {
+        dispatch(goingtogetjobsfromaction(queryvar, queryvartwo))
+    },
+    // setqueries: (queryvar, queryvartwo) => {
+    //     dispatch(settingqueriesinactions(queryvar, queryvartwo))
+    // }
 })
 
-const Home = ({setjobdetail}) => {
+const Home = ({jobs, getjobs, setqueries, setjobdetail}) => {
 
-    const [query, setquery] = useState('writing')
-    const [jobs, setjobs] = useState([])
-    const [queryvar, setqueryvar] = useState('search')
-    const [mediator, setmediator] = useState('')
+     const [query, setquery] = useState('writing')
+    // const [jobs, setjobs] = useState([])
+     const [queryvar, setqueryvar] = useState('search')
+     const [queryvartwo, setqueryvartwo] = useState('')
 
-  
-
-    const fetchfunc = async () => {
-        try {
-            const response = await fetch(`https://strive-jobs-api.herokuapp.com/jobs?${queryvar}=${query}`)
-
-            if (response.ok) {
-                const convertedtojson = await response.json()
-                setjobs(convertedtojson.data.slice(0, 15))
-
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const controlfunc = (e) => {
-        e.preventDefault()
-        setmediator(e.target.value)
-    }
-
-    const changestate = () => {
-        setquery(mediator)
-    }
 
     useEffect(() => {
-        fetchfunc()
-        console.log(jobs)
+        getjobs(queryvar, queryvartwo)
+        
     }, [])
 
-    useEffect(() => {
-        fetchfunc()
-        console.log(jobs)
-    }, [query])
+    // useEffect(() => {
+    //     fetchfunc()
+    //     console.log(jobs)
+    // }, [query])
 
     return (
         <>
@@ -68,6 +49,7 @@ const Home = ({setjobdetail}) => {
                                     value={queryvar}
                                     onChange={(e) => {
                                         setqueryvar(e.target.value)
+                                        
                                     }}
                                 >
                                     <option>search</option>
@@ -84,11 +66,18 @@ const Home = ({setjobdetail}) => {
                             <Form.Group>
                                 <Form.Label>type search string</Form.Label>
                                 <Form.Control
-                                    onChange={(e) => { controlfunc(e) }}
+                                   value={query}
+                                    onChange={e => setquery(e.target.value)}
+                                    onKeyDown={e => {
+                                        if(e.key === 'k'){
+                                            setqueryvartwo(query)
+                                            setqueries(queryvar, queryvartwo)
+                                        }
+                                    }}
                                 >
                                 </Form.Control>
                             </Form.Group>
-                            <Button onClick={(e) => changestate()}> Click </Button>
+                            
                         </Form>
                     </Col>
                 </Row>

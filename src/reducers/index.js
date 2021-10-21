@@ -22,6 +22,15 @@ const MainReducer = (state = initialState, action) => {
                 }
             }
         }
+
+        case 'ADD_THE_JOBS': {
+            return {
+                ...state,
+                jobs: {
+                    job: state.jobs.job.concat(action.payload)
+                }
+            }
+        }
         
         default: return state
     }

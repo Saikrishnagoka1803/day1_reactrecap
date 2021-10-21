@@ -14,14 +14,18 @@ export const removejobfromfavourites = (job) => ({
     payload: job
 })
 
-export const goingtoactions = () => {
-    return async() => {
+export const goingtogetjobsfromaction = (queryvar, queryvartwo) => {
+    return async(dispatch) => {
         try {
-            const response = await fetch(`https://strive-jobs-api.herokuapp.com/jobs?${queryvar}=${query}`)
+            const response = await fetch(`https://strive-jobs-api.herokuapp.com/jobs?${queryvar}=${queryvartwo}`)
 
             if (response.ok) {
-                const convertedtojson = await response.json()
-                setjobs(convertedtojson.data.slice(0, 15))
+                const jobsinjson = await response.json()
+                //setjobs(convertedtojson.data.slice(0, 15))
+                dispatch({
+                    type: ADD_THE_JOBS,
+                    payload: jobsinjson.data.slice(0,25)
+                })
 
             }
         } catch (error) {
